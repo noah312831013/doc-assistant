@@ -1,7 +1,7 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Table
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, ForeignKey, Integer, String, Table
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from app.database import Base
-from sqlalchemy.orm import Mapped, mapped_column
 
 # 多對多關聯表：User <-> Role
 user_roles = Table(

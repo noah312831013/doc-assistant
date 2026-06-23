@@ -54,5 +54,5 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Run pytest
-        run: pytest --tb=short -v
+      - name: Run pytest with coverage
+        run: pytest --cov=app --cov-report=term-missing --cov-fail-under=70
