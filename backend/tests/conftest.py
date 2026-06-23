@@ -1,3 +1,5 @@
+from unittest.mock import MagicMock, patch
+
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
@@ -35,7 +37,7 @@ def db_session():
 
 @pytest.fixture
 def client(db_session):
-    """覆寫 get_db dependency，讓 API 用測試 DB"""
+    """覆寫 get_db dependency，讓 API 用測試 DB；mock Redis 避免 CI 連線失敗"""
 
     def override_get_db():
         try:
@@ -44,6 +46,7 @@ def client(db_session):
             db_session.close()
 
     app.dependency_overrides[get_db] = override_get_db
-    with TestClient(app) as c:
-        yield c
+    with patch("app.session.r", MagicMock()):
+        with TestClient(app) as c:
+            yield c
     app.dependency_overrides.clear()
